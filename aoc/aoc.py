@@ -17,6 +17,16 @@ def loadlines(filename, newline=True):
     return load(filename, newline).split("\n")
 
 
+def read_to_blank_line(lines):
+    output = []
+    while len(lines) > 0:
+        nextline = lines.pop(0)
+        if nextline == "":
+            break
+        output.append(nextline)
+    return output, lines
+
+
 def sort_dict(d, reverse=False):
     """Returns keys for a dict, sorted"""
     return sorted(d, key=d.get, reverse=reverse)
