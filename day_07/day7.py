@@ -13,14 +13,14 @@ class Disk:
         if p == "/":
             self.path = [""]
             self.cnode = self.root
-            return p
+            return
         if p == "..":
             self.path.pop()
             self.cnode = self.cnode.parent
-            return p
+            return
         self.path.append(p)
         self.cnode = self.cnode.getchild(p)
-        return p
+        return
 
     def parse(self, script):
         for line in script:

@@ -48,4 +48,4 @@ class FileTree():
         node.parent = self
 
     def getchild(self, name):
-        return self.children.get(name, None)
+        return self.children[name]
