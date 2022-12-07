@@ -8,8 +8,8 @@ def aretheyunique(letters):
 
 def get_marker(word, length=4):
     for i in range(len(word)):
-        if aretheyunique(word[i:i+length]):
-            return i+length # skip 4 and report first char after 'start' marker
+        if aretheyunique(word[i:i + length]):
+            return i + length  # skip 4 and report first char after 'start' marker
 
 
 def part1(data):

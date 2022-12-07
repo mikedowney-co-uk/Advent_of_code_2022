@@ -17,16 +17,6 @@ def loadlines(filename, newline=True):
     return load(filename, newline).split("\n")
 
 
-def read_to_blank_line(lines):
-    output = []
-    while len(lines) > 0:
-        nextline = lines.pop(0)
-        if nextline == "":
-            break
-        output.append(nextline)
-    return output, lines
-
-
 def sort_dict(d, reverse=False):
     """Returns keys for a dict, sorted"""
     return sorted(d, key=d.get, reverse=reverse)
@@ -43,3 +33,19 @@ class CountingDict(UserDict):
         self[key] = value
 
 
+class FileTree():
+    """Node is either a file,size for a directory"""
+
+    def __init__(self, path, name, size=0):
+        self.children = {}
+        self.name = name
+        self.size = size
+        self.parent = self
+        self.path = "/".join(path) + f"/{name}"
+
+    def addnode(self, node):
+        self.children[node.name] = node
+        node.parent = self
+
+    def getchild(self, name):
+        return self.children.get(name, None)
