@@ -15,7 +15,7 @@ def movetail(head, tail):
     if distance > 1 and all(abs(difference) >= [1, 1]):
         tail = tail + np.sign(difference)
     elif distance > 1:
-        tail = tail + np.ceil(difference / abs(distance))
+        tail = tail + np.ceil(difference / distance)
     return tail.astype(int)
 
 
@@ -65,10 +65,10 @@ def part2(data):
     for line in data:
         angle, steps = line.split(" ")
         step = moves[angle]
-        for i in range(int(steps)):
+        for _ in range(int(steps)):
             rope[0] = rope[0] + step  # move the head of the rope
-            for i in range(1, 10):
-                rope[i] = movetail(rope[i - 1], rope[i])
+            for j in range(1, 10):
+                rope[j] = movetail(rope[j - 1], rope[j])
             visited.add(str(rope[-1]))
 
     assert len(visited) == 2562 or len(visited) == 36
