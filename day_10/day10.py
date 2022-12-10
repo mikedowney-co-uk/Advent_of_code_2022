@@ -1,7 +1,7 @@
 from aoc import aoc
 
 
-class CPU():
+class CPU:
     def __init__(self, file):
         self.x = 1
         self.cycle = 1
