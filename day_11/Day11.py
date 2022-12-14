@@ -55,14 +55,14 @@ def load_monkeys(file):
 
     while len(data) > 0:
         monkey = Monkey()
-        line = data.pop(0)  # monkey number
+        data.pop(0)  # monkey number
 
-        line = line = data.pop(0)  # starting items
+        line = data.pop(0)  # starting items
         _, items = line.split(":")
         items = [int(i) for i in items.split(",")]
         monkey.items = items
 
-        line = line = data.pop(0)  # opeeration
+        line = data.pop(0)  # operation
         op = line.split("= old ")[1]
         if "* old" in op:
             monkey.power = 2
@@ -71,20 +71,20 @@ def load_monkeys(file):
         else:
             monkey.add = int(op.split("+")[1])
 
-        line = line = data.pop(0)  # test
+        line = data.pop(0)  # test
         monkey.test = int(line.split("by ")[1])
 
-        line = line = data.pop(0)  # true
+        line = data.pop(0)  # true
         monkey.true = int(line.split("monkey ")[1])
 
-        line = line = data.pop(0)  # false
+        line = data.pop(0)  # false
         monkey.false = int(line.split("monkey ")[1])
 
         monkeys.append(monkey)
         if len(data) > 0:
             data.pop(0)  # skip blank line
 
-        print(monkey)
+        # print(monkey)
     return monkeys
 
 
@@ -132,14 +132,12 @@ def part2(file):
     Monkey.factors = reduce(mul, factors, 1)
 
     def phew(self):
-        if self.items[0] > Monkey.factors:
-            self.items[0] = self.items[0] % Monkey.factors
+        self.items[0] = self.items[0] % Monkey.factors
 
     Monkey.phew = phew
 
     business(monkeys, 10000)
     score = scores(monkeys)
-    print(score)
     assert score == 2713310158 or score == 54832778815
     return score
 
