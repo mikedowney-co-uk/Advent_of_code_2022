@@ -1,4 +1,5 @@
 from aoc import aoc
+from time import perf_counter
 
 air = "."
 rock = "#"
@@ -29,14 +30,6 @@ class Cave:
         for row in self.grid:
             print(f" {row} ")
 
-    def get_block(self, position):
-        x = position[0] - self.left
-        y = position[1] - self.top
-        if x < 0 or x >= self.width or y >= self.height:  # Have we fallen off the play area?
-            print("Left World at", x, y)
-            return None
-        return self.grid[y][x]
-
     def set_block(self, position, block):
         self.grid[position[1] - self.top][position[0] - self.left] = block
 
@@ -56,27 +49,30 @@ class Cave:
                 start = end
 
     def get_move(self, position):
-        """Returns the block the sand can move to, followed by a flag saying whether the block moved at all.
-        Returns None,False if the block exits the grid."""
-        starting_block = self.get_block(position)
+        """Returns the block the sand can move to, or a flag saying whether the block moved at all,
+        with None if the block exits the grid."""
+        starting_block = self.grid[position[1] - self.top][position[0] - self.left]
         if starting_block != air:
-            return None, False
+            return None
         for move in [(0, 1), (-1, 1), (1, 1)]:
             moveto = (position[0] + move[0], position[1] + move[1])
-            block = self.get_block(moveto)
-            if block is None:
-                return None, False
+            try:  # This is faster than checking range first
+                block = self.grid[moveto[1] - self.top][moveto[0] - self.left]
+            except IndexError as ie:
+                return None  # Fallen out of the world
             if block == air:
-                return moveto, True
+                return moveto
         # No moves left.
-        return position, False
+        return False
 
     def drop_sand(self, sand):
         moved = True
         while moved:
-            moveto, moved = self.get_move(sand)
+            moveto = self.get_move(sand)
             if moveto is None:
                 return False
+            if moveto is False:
+                break
             sand = moveto
         self.set_block(sand, "o")
         return True
@@ -117,7 +113,7 @@ def run(file):
     cave.build()
     # cave.show()
     print("Part 1")
-    part1(cave)
+    # part1(cave)
 
     print("Part 2")
     part2(cave)
@@ -126,6 +122,9 @@ def run(file):
 if __name__ == "__main__":
     print("Test Data")
     run("test.txt")
+    start = perf_counter()
     print("Actual Data")
     run("data.txt")
+    end = perf_counter()
+    print(end - start)
     exit()
