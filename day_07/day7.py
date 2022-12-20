@@ -1,10 +1,11 @@
+from aoc.filetree import FileTree
 from aoc import aoc
 
 
 class Disk:
     def __init__(self, script):
         self.path = []
-        self.root = aoc.FileTree(self.path, "")
+        self.root = FileTree(self.path, "")
         self.cnode = self.root
         self.sizes = {}
         self.parse(script)
@@ -33,7 +34,7 @@ class Disk:
                     # read until the next command
                     continue
             sizeordir = int(bits[0]) if bits[0] != "dir" else 0
-            newnode = aoc.FileTree(self.path, bits[1], sizeordir)
+            newnode = FileTree(self.path, bits[1], sizeordir)
             self.cnode.addnode(newnode)
 
     def getsize(self, node):

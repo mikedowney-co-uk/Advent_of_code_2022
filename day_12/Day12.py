@@ -1,8 +1,9 @@
-from dijkstra import Graph, DijkstraSPF
+from aoc.dijkstra import Dijkstra
+from aoc.graph import Graph
 from aoc.terrain import Terrain
 
 
-def build_graph(terrain):
+def build_graph(terrain, reverse=False):
     """Yes, I know this is probably cheating a bit using someone else's implementation..."""
     graph = Graph()
     for y in range(terrain.height):
@@ -10,13 +11,18 @@ def build_graph(terrain):
             node = (x, y)
             moves = terrain.get_moves(node)
             for move in moves:
-                graph.add_edge(str(node), str(move), 1)
+                if reverse:
+                    graph.add_edge(str(move), str(node), 1)
+                else:
+                    graph.add_edge(str(node), str(move), 1)
     return graph
 
 
-def solve(graph, start, end):
-    dijkstra = DijkstraSPF(graph, str(start))
-    return dijkstra.get_distance(str(end))
+def solve(graph, start, end=None):
+    dijkstra = Dijkstra(graph, str(start))
+    return dijkstra.solve(str(end))
+    # djikstra = DijkstraSPF(graph, str(start))
+    # return djikstra.get_distance(str(end))
 
 
 def part1(terrain):
@@ -27,11 +33,15 @@ def part1(terrain):
 
 
 def part2(terrain):
-    allstarts = terrain.find("a")
-    graph = build_graph(terrain)
-    results = [solve(graph, start, terrain.end) for start in allstarts]
-    results.sort()
-    result = results[0]
+    # Build the graph but with the directions pointing backwards
+    allstarts = [str(a) for a in terrain.find("a")]
+    graph = build_graph(terrain, reverse=True)
+    results, _ = solve(graph, terrain.end)
+    # Take the results where we ended up at one of the start positions
+    has_correct_start = [r for r in results if r in allstarts]
+    distances = [results[a] for a in has_correct_start]
+    distances.sort()
+    result = distances[0]
     assert result == 29 or result == 500
     return result
 
@@ -50,4 +60,5 @@ if __name__ == "__main__":
     run("test.txt")
     print("Actual Data")
     run("data.txt")
+    print("Done.")
     exit()
