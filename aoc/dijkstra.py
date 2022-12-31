@@ -15,19 +15,19 @@ class Dijkstra:
 
     def solve(self, target=None):
         # print(f"Solving for  {self.start_node} ->  {target}")
-        queue = dict()  # name:node
-        dist = dict()
-        prev = dict()
+        queue = {}  # name:node
+        dist = {}
+        prev = {}
         for node in self.graph.nodes:
             dist[node] = math.inf
-            queue[node] = self.graph.nodes[node]
+            queue[node] = self.graph.get_node(node)
         dist[self.start_node] = 0
 
         while queue:
             u = find_min_dist(queue, dist)
             for v in u.connections:
-                alt = dist.get(u.name, math.inf) + u.connections.get(v, math.inf)
-                if v in dist and alt < dist[v]:
+                alt = dist[u.name] + u.get_weight(v)
+                if alt < dist[v]:
                     dist[v] = alt
                     prev[v] = u
             if u.name == target:

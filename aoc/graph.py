@@ -1,3 +1,6 @@
+import math
+
+
 class Node:
     def __init__(self, name):
         self.name = name
@@ -5,6 +8,9 @@ class Node:
 
     def add_link(self, target, distance):
         self.connections[target] = distance
+
+    def get_weight(self, node):
+        return self.connections.get(node, math.inf)
 
 
 class Graph:
@@ -20,3 +26,12 @@ class Graph:
         else:
             origin = self.nodes[source]
         origin.add_link(destination, distance)
+
+    def get_node(self, node):
+        return self.nodes[node]
+
+    def get_connections(self, node):
+        return self.nodes[node].connections
+
+    def get_edge(self, node1, node2):
+        return self.get_node(node1).get_weight(node2)
