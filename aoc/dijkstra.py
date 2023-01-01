@@ -1,16 +1,14 @@
 import math
 
-from aoc.graph import Node
 
-
-def find_min_dist(queue: dict[str], dist: dict[str]) -> Node:
+def find_min_dist(queue: dict[str], dist: dict[str]):
     sorted_nodes = sorted(queue, key=dist.get)
     return queue.pop(sorted_nodes[0])
 
 
 class Dijkstra:
-    def __init__(self, graph, start_node):
-        self.graph = graph
+    def __init__(self, gr, start_node):
+        self.graph = gr
         self.start_node = start_node
 
     def solve(self, target=None):
@@ -33,3 +31,13 @@ class Dijkstra:
             if u.name == target:
                 return dist[u.name]
         return dist, prev
+
+
+if __name__ == "__main__":
+    from graph import _graph_for_testing
+
+    graph = _graph_for_testing()
+    dijkstra = Dijkstra(graph, "A")
+    distance = dijkstra.solve("D")
+    assert distance == 3
+

@@ -35,3 +35,24 @@ class Graph:
 
     def get_edge(self, node1, node2):
         return self.get_node(node1).get_weight(node2)
+
+
+def _graph_for_testing():
+    graph = Graph()
+    graph.add_edge("A", "B", 1)
+    graph.add_edge("A", "C", 3)
+    graph.add_edge("B", "C", 1)
+    graph.add_edge("C", "D", 1)
+    graph.add_edge("B", "D", 3)
+    return graph
+
+
+def _tree_for_testing():
+    graph = Graph()
+    graph.add_edge("A", "B", 1)
+    graph.add_edge("A", "C", 3)
+    graph.add_edge("B", "D", 1)
+    graph.add_edge("B", "E", 2)
+    graph.add_edge("C", "F", 3)
+    graph.add_edge("C", "G", 4)
+    return graph

@@ -4,7 +4,6 @@ from aoc.terrain import Terrain
 
 
 def build_graph(terrain, reverse=False):
-    """Yes, I know this is probably cheating a bit using someone else's implementation..."""
     graph = Graph()
     for y in range(terrain.height):
         for x in range(terrain.width):
@@ -21,8 +20,6 @@ def build_graph(terrain, reverse=False):
 def solve(graph, start, end=None):
     dijkstra = Dijkstra(graph, str(start))
     return dijkstra.solve(str(end))
-    # djikstra = DijkstraSPF(graph, str(start))
-    # return djikstra.get_distance(str(end))
 
 
 def part1(terrain):
@@ -40,15 +37,13 @@ def part2(terrain):
     # Take the results where we ended up at one of the start positions
     has_correct_start = [r for r in results if r in allstarts]
     distances = [results[a] for a in has_correct_start]
-    distances.sort()
-    result = distances[0]
+    result = min(distances)
     assert result == 29 or result == 500
     return result
 
 
 def run(file):
     terrain = Terrain(file)
-
     print("Part 1")
     print(part1(terrain))
     print("Part 2")
