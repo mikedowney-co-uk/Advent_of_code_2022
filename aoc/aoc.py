@@ -31,6 +31,10 @@ assert insert("X", ".....", 0) == "X...."
 assert insert("X", ".....", 4) == "....X"
 
 
+def locate(list_of_items, item_to_find):
+    return [index for index, value in enumerate(list_of_items) if value == item_to_find]
+
+
 class CountingDict(UserDict):
     """Counts how many times an item has been added, or sums the values added for a key"""
 
@@ -40,5 +44,3 @@ class CountingDict(UserDict):
 
     def add(self, key, value=1):
         self[key] = value
-
-
