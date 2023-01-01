@@ -2,7 +2,7 @@ from aoc import aoc
 
 winds = []
 nwinds = 0
-windcount = -1
+windcount = 0
 
 width = 7
 
@@ -18,8 +18,8 @@ background = " "
 
 def get_gust():
     global windcount
-    windcount += 1
-    blow = winds[windcount % nwinds]
+    blow = winds[windcount]
+    windcount = (windcount + 1) % nwinds
     return -1 if blow == "<" else 1
 
 
@@ -119,23 +119,80 @@ def show(grid):
         print(grid[-y])
 
 
-def part1(data):
-    global background, windcount
-    windcount = -1
+def run_simulation(howmany):
+    global windcount, background
+    windcount = 0
     background = "."
     grid = [background * width] * 5
     # grid has ground level at 0
 
-    for i in range(2022):
+    for i in range(howmany):
         b = blocks[i % 5]
         drop_block(grid, b)
-
-    assert gridheight(grid) == 3068 or gridheight(grid) == 3232
-    return gridheight(grid)
+    return grid
 
 
-def part2(data):
-    return
+def part1():
+    grid = run_simulation(2022)
+    height = gridheight(grid)
+    assert height == 3068 or height == 3232
+    return height
+
+
+def find_repeats(grid, startat):
+    rowsmatching = set(aoc.locate(grid, grid[startat]))
+    for i in range(1, 10):
+        indices = aoc.locate(grid, grid[startat + i])
+        rowstokeep = set()
+        for rowtocheck in indices:
+            if rowtocheck - i in rowsmatching:
+                rowstokeep.add(rowtocheck - i)
+        rowsmatching = rowstokeep
+    return rowsmatching
+
+
+def search_for_repeats(grid):
+    for s in range(len(grid) // 2):
+        rows = find_repeats(grid, s)
+        if len(rows) > 1:
+            return rows
+
+
+# Need to find out how often the pattern repeats so we can multiply them together to get the predicted height
+# This is quite convoluted - there must be a much easier way of doing it but it's New Years Day and I'm tired
+# and can't think of one at the moment.
+def part2():
+    global windcount
+    windcount = 0
+
+    # Get the grid heights where we see the repeats
+    grid = run_simulation(10000)
+    repeats = list(search_for_repeats(grid))
+    repeats.sort()
+    repeats_start_at = repeats[0]
+    repeat_length = repeats[1] - repeats[0]
+
+    # Now find out how many drops are needed to get these repeat heights
+    grid = [background * width] * 5
+    nextblock = 0
+    windcount = 0
+    drops = {}
+    for i in range(repeat_length * 3):
+        b = blocks[nextblock]
+        nextblock = (nextblock + 1) % 5
+        drop_block(grid, b)
+        height = gridheight(grid)
+        if (height - repeats_start_at) % repeat_length == 0:
+            drops[height] = (i + 1)
+
+    drops = list(drops.values())
+    starts_repeating_after = drops[0]
+    repeats_every = drops[1] - drops[0]
+    number_of_drops = 1000000000000
+    number_of_repeats = (number_of_drops - starts_repeating_after) / repeats_every
+    tower_height = int(repeats_start_at + number_of_repeats * repeat_length)
+    assert tower_height == 1514285714288 or tower_height == 1585632183915
+    return tower_height
 
 
 def run(file):
@@ -145,9 +202,9 @@ def run(file):
     nwinds = len(winds)
 
     print("Part 1")
-    print(part1(data))
+    print(part1())
     print("Part 2")
-    print(part2(data))
+    print(part2())
 
 
 if __name__ == "__main__":
