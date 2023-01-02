@@ -17,6 +17,14 @@ def loadlines(filename, newline=True):
     return load(filename, newline).split("\n")
 
 
+def parse_csv(data):
+    return [[v for v in row.split(",")] for row in data]
+
+
+def parse_csv_int(data):
+    return [[int(v) for v in row.split(",")] for row in data]
+
+
 def sort_dict(d, reverse=False):
     """Returns keys for a dict, sorted"""
     return sorted(d, key=d.get, reverse=reverse)
