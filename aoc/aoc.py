@@ -1,5 +1,5 @@
 from collections import UserDict
-
+import re
 
 def load(filename, newline=True):
     """Loads a text file, adding a newline at the end if there isn't one
@@ -23,6 +23,13 @@ def parse_csv(data):
 
 def parse_csv_int(data):
     return [[int(v) for v in row.split(",")] for row in data]
+
+
+intpattern = r"[+-]{0,1}\d+"
+
+
+def extractints(s):
+    return [int(i) for i in re.findall(intpattern, s)]
 
 
 def sort_dict(d, reverse=False):
@@ -52,3 +59,12 @@ class CountingDict(UserDict):
 
     def add(self, key, value=1):
         self[key] = value
+
+    def remove(self, key, value=1):
+        newvalue = self[key] - value if key in self else -1
+        if newvalue == 0:
+            super().pop(key)
+        elif newvalue > 0:
+            super().__setitem__(key, newvalue)
+        else:
+            raise KeyError(f"Removing too many {key}, have {self[key]}, removing {value}")
