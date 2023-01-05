@@ -1,6 +1,5 @@
 from aoc import aoc
 import numpy as np
-from scipy.spatial.distance import chebyshev
 
 
 def move(direction, head, tail):
@@ -11,7 +10,7 @@ def move(direction, head, tail):
 
 def movetail(head, tail):
     difference = head - tail
-    distance = chebyshev(head, tail)
+    distance = aoc.chebyshev(head, tail)
     if distance > 1 and all(abs(difference) >= [1, 1]):
         tail = tail + np.sign(difference)
     elif distance > 1:
@@ -31,7 +30,6 @@ def test():
     assert all(np.equal(tail, np.array([3, 3]))), "3"
     head, tail = move(right_step, head, tail)
     assert all(np.equal(tail, np.array([4, 3]))), "4"
-
 
 
 moves = {

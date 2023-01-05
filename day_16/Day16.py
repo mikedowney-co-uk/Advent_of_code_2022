@@ -89,8 +89,8 @@ def run(file):
     print("Part 1")
     data = aoc.loadlines(file)
     print(part1(data))
-    # print("Part 2")
-    # print(part2(data))
+    print("Part 2")
+    print(part2(data))
 
 
 if __name__ == "__main__":

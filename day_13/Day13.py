@@ -16,16 +16,10 @@ def parse(lines):
     return pairs
 
 
-def compareint(left, right):
-    if left == right:
-        return 0
-    else:
-        return -1 if left < right else 1
-
 
 def compare(left, right):
     if type(left) == int and type(right) == int:
-        return compareint(left, right)
+        return aoc.compareint(left, right)
     if type(left) == int:
         left = [left]
     if type(right) == int:

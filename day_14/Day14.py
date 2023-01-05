@@ -128,3 +128,7 @@ if __name__ == "__main__":
     end = perf_counter()
     print(end - start)
     exit()
+
+# 0.27s in PyPy
+# 1.1s in CPython 3.11
+# 2.2s in CPython 3.10

@@ -1,7 +1,7 @@
 import math
 
 
-def find_min_dist(queue: dict[str], dist: dict[str]):
+def find_min_dist(queue, dist):
     sorted_nodes = sorted(queue, key=dist.get)
     return queue.pop(sorted_nodes[0])
 

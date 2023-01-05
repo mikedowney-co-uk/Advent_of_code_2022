@@ -1,6 +1,7 @@
 from collections import UserDict
 import re
 
+
 def load(filename, newline=True):
     """Loads a text file, adding a newline at the end if there isn't one
     or removing one if not required."""
@@ -15,6 +16,16 @@ def load(filename, newline=True):
 
 def loadlines(filename, newline=True):
     return load(filename, newline).split("\n")
+
+
+def read_to_blank_line(lines):
+    output = []
+    while len(lines) > 0:
+        nextline = lines.pop(0)
+        if nextline == "":
+            break
+        output.append(nextline)
+    return output, lines
 
 
 def parse_csv(data):
@@ -48,6 +59,17 @@ assert insert("X", ".....", 4) == "....X"
 
 def locate(list_of_items, item_to_find):
     return [index for index, value in enumerate(list_of_items) if value == item_to_find]
+
+
+def chebyshev(node1, node2):
+    return max(abs(node1[0] - node2[0]), abs(node1[1] - node2[1]))
+
+
+def compareint(left, right):
+    if left == right:
+        return 0
+    else:
+        return -1 if left < right else 1
 
 
 class CountingDict(UserDict):
